@@ -9,8 +9,8 @@ email: oyyj42@126.com
 
 #desc: "All in, Saturation attack. "
 description: "All in, Saturation attack. "
-markdown: kramdown
-
+markdown: ramdown
+baseurl: /blog
         
 custom:
     category:
