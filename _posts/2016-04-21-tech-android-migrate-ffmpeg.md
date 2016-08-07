@@ -7,7 +7,7 @@ category: android
 
 
 
-=========================
+------
 
 
 
@@ -25,9 +25,9 @@ AndroidStudio 1.3以上
 
 
 
-=========================
+------
 
-####1. Android完整版本交叉编译
+#### 1. Android完整版本交叉编译
 
 [参考1](http://blog.csdn.net/gobitan/article/details/22750719)：
 
@@ -134,8 +134,7 @@ $ADDITIONAL_CONFIGURE_FLAG
 }
 build_one
 
-~                                                                                                                                                                                                        
-~                  
+                  
 ```
 
 并增加可执行权限
@@ -174,7 +173,7 @@ chmod +x build_android.sh
 
 成了，可以拿各种so库来用了。
 
-####2.彩蛋
+#### 2.彩蛋
 在1.2的基础上，要开启neon的话，需要在build_android.sh脚本里增加以下内容：
 
 ```
@@ -189,8 +188,7 @@ chmod +x build_android.sh
 
 --sysroot=$SYSROOT \
 
---extra-cflags="-fPIC -DANDROID -mfpu=neon -mfloat-abi=softfp -marm -march=armv7-a -I$NDK/platforms/android9/
-arch-arm/usr/include " \
+--extra-cflags="-fPIC -DANDROID -mfpu=neon -mfloat-abi=softfp -marm -march=armv7-a -I$NDK/platforms/android9/arch-arm/usr/include " \
 
 ```
 
@@ -199,7 +197,7 @@ arch-arm/usr/include " \
 后续可以慢慢参考官方文档，禁用其他用不到的功能，逐步削减大小。
 
 
-###3.app例子
+### 3.app例子
 
 
 
@@ -208,11 +206,10 @@ arch-arm/usr/include " \
 在Eclipse或者AndrodStudio里创建工程，（这里用的是*** AndroidStudio***），添加jni文件夹，把上面的各个.so文件和/arm/include/目录下的头文件拷贝到jni目录下，编写一个java类***ffcodec_controller.java***，粘合层*** ffcodec_controller.***,再编写Application.mk和Android.mk
 
 
-![jni目录](/Users/oyyj/Documents/MouMarkdown/img/ffmpeg_jni_dir_edit.png)
+![jni目录]({{site.baseurl}}/img/ffmpeg_jni_dir_edit.png)
 
 
 
-====
 
 FFCodecController.java
 
@@ -267,20 +264,16 @@ public class FFCodecController {
 ```
 
 
-====
+-------------
 
 
-
-
-========
-
- Android.mk
+Android.mk
  
- ```
+```
  
 LOCAL_PATH := $(call my-dir)  
   
-# FFmpeg library  
+
 include $(CLEAR_VARS)  
 LOCAL_MODULE := avcodec  
 LOCAL_SRC_FILES := libavcodec-56.so  
@@ -321,7 +314,7 @@ LOCAL_MODULE := swscale
 LOCAL_SRC_FILES := libswscale-3.so  
 include $(PREBUILT_SHARED_LIBRARY)  
   
-# Program  
+ 
 include $(CLEAR_VARS)  
 LOCAL_MODULE := ffcodec_controller  
 LOCAL_SRC_FILES := ffcodec_controller.c  
@@ -332,25 +325,27 @@ LOCAL_SHARED_LIBRARIES := avcodec avdevice avfilter avformat avutil postproc swr
 include $(BUILD_SHARED_LIBRARY)  
  
  
- 
- ```
+```
  
  
  
  Application.mk  (ABI总共有四种，分别是armeabi、armeabi-v7a、mips、x86)，后来最新的还有 arm64-v8a（例如heilo-X25）
  
- ```
+ 
+```
  
  APP_ABI := armeabi-v7a
-
- ```
  
- =======
+
+```
+ 
+
  
  
  切换到/src/main/jni/,执行ndk-build，so文件会输出到/libs/armeabi-v7a/
  
 ```
+
 [armeabi-v7a] Prebuilt       : libpostproc-53.so <= jni/
 [armeabi-v7a] Prebuilt       : libswresample-1.so <= jni/
 [armeabi-v7a] Prebuilt       : libswscale-3.so <= jni/
@@ -360,24 +355,29 @@ include $(BUILD_SHARED_LIBRARY)
 [armeabi-v7a] Install        : libswresample-1.so => libs/armeabi-v7a/libswresample-1.so
 [armeabi-v7a] Install        : libswscale-3.so => libs/armeabi-v7a/libswscale-3.so
 
+
 ```
  
  为了让AndroidStudio打包的时候加上头文件，记得在***build.gradle***里加上
  
- ```
  
- android{
+```
  
-	 ...
+ android
+ {
+ 
+	 
  
      sourceSets {
         main {
             jniLibs.srcDirs = ['src/main/libs']
         }
     }
-}
+ {
  
- ```
+```
+ 
+  
 简单的Activity测试代码：
  
  
@@ -421,13 +421,18 @@ public class MainActivity extends Activity {
 
 运行到手机里，即可以解码出来yuv（YUV420P格式）文件：
 
-![](/Users/oyyj/Documents/MouMarkdown/img/save_yuv_edit.png)
+![]({{site.baseurl}}/img/save_yuv_edit.png)
 
-==========
+
 
 ***ffcodec_controller.c的源码***实在太长，就不贴了，详情请看
 [github 项目主页](https://github.com/oyyj42/SimpleFFmpegDemo)
 
+
+
+------------------
+
+### 4.参考连接：
 
 
 
