@@ -15,7 +15,7 @@ markdown: kramdown
 custom:
     category:
         java: 一点Java 
-        android: Android 拆轮子与造轮子i
+        android: Android 拆轮子与造轮子
         thinking: 思鉴录
         efficency: 银弹和效率
         python: Python
